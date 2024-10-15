@@ -1,0 +1,206 @@
+
+<link rel="stylesheet" href="<?=$base_url?>assets/css/reset.css">
+<link href="<?=$base_url?>assets/css/login_black.css" rel="stylesheet"/>
+<script>
+    $( document ).ready(function() {
+        alert('為確保用戶使用品質及避免因為網路延遲造成問題!!\n 強烈建議在4G以上網路速度穩定的連線環境使用本教學軟體!!\n謝謝!');
+        alert("此教學軟體用途為模擬測試教學使用請勿用於非法用途!\n一切法律問題皆與本公司無關恕不負責!");
+        //檢查瀏覽器
+        var isSafari = navigator.userAgent.search("Safari") > -1
+        if (!isSafari) {
+
+            alert('請使用Chrome瀏覽器!\n若使用非Chrome瀏覽器可能導致無法使用此教學軟體完整功能。\n\n此教學軟體用途為模擬測試教學使用請勿用於非法用途!\n一切法律問題皆與本公司無關恕不負責!');
+        }
+
+        $('#butSubmit').click(function(){
+            var model = $("form").serializeArray();
+            var obj  = ajaxSave(model,webroot +"/login/doLogin");
+            //alert(webroot+'/login/doLogin');
+            obj.success(function (res) {
+                console.log(res);
+                if(res.msg=="success")
+                {
+                    var tmp =$("#account").val();
+                    var tmp2 = $("#password").val();
+                    _setCookie("fu_acc",tmp,365);
+                    _setCookie("fu_pw",tmp2,365);
+                    alertify.success("登入成功");
+                    sessionStorage["loginCheck"] = true;
+                    alertify.success("登入成功");
+                    window.location = webroot + "/operation?token="+res.token;
+                }
+                else
+                {
+                    alertify.error(res.msg);
+                }
+
+            });
+        });
+        //檢查英文
+        $('#account').keyup(function(){
+            var _str = $('#account').val();
+            re = /\W/;
+            if (re.test(_str))
+            {
+                $('#account').addClass('bad_str');
+            }else
+            {
+                $('#account').removeClass('bad_str');
+            }
+
+
+        });
+    });
+</script>
+<style>
+    /*解決這個class 在bootstrap中是白色的*/
+    .panel {
+        margin-bottom: 20px;
+        background-color: transparent;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+
+
+</style>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?=$base_url?>assets/login/img/apple-touch-icon-144x144-precomposed.png" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?=$base_url?>assets/login/img/apple-touch-icon-114x114-precomposed.png" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?=$base_url?>assets/login/img/apple-touch-icon-72x72-precomposed.png" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" href="<?=$base_url?>assets/login/img/apple-touch-icon-57x57-precomposed.png" type="image/x-icon">
+    <link rel="shortcut icon" href="<?=$base_url?>assets/login/img/favicon.png">
+    <!-- Bootstrap -->
+    <link href="<?=$base_url?>assets/login/css/bootstrap.css" rel="stylesheet">
+    <link href="<?=$base_url?>assets/login/css/screen.css" rel="stylesheet">
+     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<!-- <div id="wrap">
+    <div id="content" background="<?=$base_url?>assets/img/startbackground_clientB.png"  >
+        <ul class="login_items">
+            <li><a target="_new" href="https://www.google.com/intl/zh-HK/chrome/browser/desktop/">Chrome下載</a></li>
+            <li><a target="_new" href="https://www.mozilla.org/zh-TW/firefox/new/">FireFox下載</a></li>
+            <li><a target="_new" href="https://www.teamviewer.com/zhTW/">遠端協助</a></li>
+            <li><a href="">意見回饋</a></li>
+        </ul>
+        <div class="panel">
+            <div style="display: inline-block;vertical-align: middle;">
+                <img class="logo_img" src="<?=$base_url?>assets/img/logoRed.png" alt="Logo" style="margin: 0px 200px 10px 200px;display: inline-block;vertical-align: middle;">
+                <div style="display: inline-block;vertical-align: middle;min-width: 350px;background-color:black;">
+                    <div class="panel_heading">教學端</div>
+                    <div class="panel_body">
+                        <form name="login_form" class="login_form" action="">
+                            <div class="form_group">
+                                <label for="server">線路：</label>
+                                <select name="server">
+                                    <option value="1-伺服器">1-伺服器</option>
+                                    <option value="2-伺服器">2-伺服器</option>
+                                    <option value="3-伺服器">3-伺服器</option>
+                                    <option value="4-伺服器">4-伺服器</option>
+                                </select>
+                            </div>
+                            <div class="form_group">
+                                <label for="account">帳號：</label>
+                                <input id="account" type="text" name="account" value="<?php if(isset($acc)){echo $acc;}?>" style="padding:5px;" AutoComplete='Off'>
+
+                            </div>
+                            <div class="form_group">
+                                <label for="password">密碼：</label>
+                                <input id="password" type="password" name="password" value="<?php if(isset($pass)){echo $pass;}?>" style="padding:5px;" AutoComplete='Off'>
+
+                            </div>
+                            <div class="remember">
+                                <input name="rememberAccount" type="checkbox" <?php if( isset( $_SESSION['acc'])){ echo 'checked=\'checked\'';} ?>>&nbsp;記住用戶名稱
+                                &nbsp;&nbsp;&nbsp;&nbsp;<input name="rememberPass" type="checkbox"<?php if( isset( $_SESSION['pass'])){ echo 'checked=\'checked\'';} ?> >&nbsp;記住密碼
+
+
+                                <!--<input type="checkbox"><label for="">記住用戶名稱</label><br>
+                                <input type="checkbox"><label for="">記住密碼</label>-->
+                           <!--  </div>
+                            <input id="butSubmit"  type="button" class="login" value="登入">
+                        </form>
+                    </div>
+                </div>
+                <div style='color:#F00'>
+
+                    <span style="font-size:large;">手機版網址</span><br>
+                    <img src="<?=$base_url?>assets/img/f168-mobile.png" width="120px" height="120px"></div><br>
+                <h3>此教學軟體用途為模擬測試教學使用請勿用於非法用途!<br>一切法律問題皆與本公司無關恕不負責!</h3></div>
+
+        </div>
+    </div>
+</div>
+</div> -->
+
+<div class="container">
+        <div class="row">
+            <div class="col-xs-5 login-flex">
+                <div class="login-wrap">
+                    <div class="bg-gray">
+                        <h2>教學端</h2>
+                        <form>
+                            <div class="form-group">
+                                <label for="">線路</label>
+                                <select class="form-control">
+                                    <option>1-伺服器</option>
+                                    <option>2-伺服器</option>
+                                    <option>3-伺服器</option>
+                                    <option>4-伺服器</option>
+                                    <option>5-伺服器</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="account">帳號</label>
+                                <!-- <input type="" class="form-control" id="" placeholder=""> -->
+                                <input id="account" class="form-control" type="text" name="account" value="<?php if(isset($acc)){echo $acc;}?>" style="padding:5px;" AutoComplete='Off'>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">密碼</label>
+                                <!-- <input type="" class="form-control" id="" placeholder=""> -->
+                                <input id="password" class="form-control" type="password" name="password" value="<?php if(isset($pass)){echo $pass;}?>" style="padding:5px;" AutoComplete='Off'>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input name="rememberAccount" type="checkbox" <?php if( isset( $_SESSION['acc'])){ echo 'checked=\'checked\'';} ?>> 記住用戶名稱
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="checkbox text-right">
+                                        <label>
+                                            <input name="rememberPass" type="checkbox" <?php if( isset( $_SESSION['pass'])){ echo 'checked=\'checked\'';} ?>> 記住密碼
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>      
+                            <div class="text-center">               
+                                <!-- <button type="submit" id="butSubmit"class="btn btn-lg btn-primary btn-block">登入</button> -->
+                                <input id="butSubmit"  type="button" class="login" value="登入" style="color: #000">
+                            </div>  
+                            <p>此教學軟體用途為模擬測試教學使用請勿用於非法用途！一切法律問題皆與本公司無關恕不負責！</p>
+                            <div class="row download-wrap">
+                                <div class="col-xs-6">
+                                    <img src="<?=$base_url?>assets/login/img/qr-google.png" alt="GOOGLE PLAY下載點">
+                                    <br>
+                                    <p>GOOGLE PLAY下載點</p>
+                                </div>
+                                <div class="col-xs-6">
+                                    <img src="<?=$base_url?>assets/login/img/qr-google.png" alt="IPHONE 蘋果專用">
+                                    <p>IPHONE 蘋果專用</p>                                  
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

@@ -1,0 +1,85 @@
+/* 覆蓋 container header的顏色 */
+.container header {
+    background-color: #ffffff;
+}
+
+.fc-event{
+  color : #000000;
+  border: 0px solid #3a87ad;
+  padding: 2px;
+}
+
+.sub-navi-control{
+  margin-top: -54px!important;
+}
+/* line 119, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/_type.scss */
+.bg-primary {
+  color: #fff;
+}
+
+/* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+.bg-primary {
+  background-color: #618fb0;
+}
+
+/* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+a.bg-primary:hover {
+  background-color: #4a7594;
+}
+
+/* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+.bg-success {
+  background-color: rgba(214, 233, 198, 1);
+}
+
+/* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+a.bg-success:hover {
+  background-color: rgba(188, 219, 161, 0.28);
+}
+
+/* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+.bg-info {
+  background-color: rgba(74, 176, 206, 1);
+}
+
+/* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+a.bg-info:hover {
+  background-color: rgba(49, 150, 180, 0.29);
+}
+
+/* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+.bg-warning {
+  background-color: rgba(229, 190, 86, 1);
+}
+
+/* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+a.bg-warning:hover {
+  background-color: rgba(222, 173, 42, 0.28);
+}
+
+/* line 5, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+.bg-danger {
+  background-color: rgba(242, 99, 73, 1);
+}
+
+/* line 8, ../../../bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_background-variant.scss */
+a.bg-danger:hover {
+  background-color: rgba(239, 58, 25, 0.29);
+}
+
+/* 本凱新增來覆載 bootstrap 預設的設定 */
+.modal-backdrop{
+  z-index: 0 !important;
+}
+
+/* 本凱新增 Overlay bootstrap btn-default */
+.btn-default {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+
+/* 本凱新增來覆載 bootstrap 預設的設定 */
+.margin-bottom {
+     margin-bottom: 10px; 
+}

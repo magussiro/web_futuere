@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DEMO PAGE</title>
+
+	<script src="http://202.55.227.39/adm/assets/js/jquery.js"></script>
+	<script type="text/javascript" src="http://202.55.227.39/adm/assets/js/DataTables-1.10.4/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="http://202.55.227.39/adm/assets/js/DataTables-1.10.4/dataTables.bootstrap.js"></script>
+	<script type="text/javascript" src="http://202.55.227.39/adm/assets/js/DataTables-1.10.4/dataTables.tableTools.min.js"></script>
+
+	<link rel="stylesheet" type="text/css"  href="http://202.55.227.39/adm/assets/css/dataTables-1.10.4/css/jquery.dataTables.min.css" />
+	<link rel="stylesheet" type="text/css"  href="http://202.55.227.39/adm/assets/css/dataTables-1.10.4/css/dataTables.bootstrap.css" />
+	<link rel="stylesheet" type="text/css"  href="http://202.55.227.39/adm/assets/css/dataTables-1.10.4/css/dataTables.tableTools.min.css" />
+
+	<script>
+
+	$( document ).ready(function()
+	{
+		//ajax 網址
+		var url = "/adm/member/getMemberList";
+	    
+		//欄位設定,待會dataTable要初始化用的
+	    var obj = {
+	    	//欄位標題,會塞在 thead 的 th 裡面
+	        "title" : ['客戶編號','客戶帳號','名稱','預設額度','帳戶餘額','類型','狀態','在線','功能','上層','佔成','強制結算'],
+	        
+	        //預設帶入表格欄位的值, 如果要塞按鈕.設定樣式.或使用多個欄位數值,可使用render帶入function來自定欄位
+	        "data"  : ['user_id','uacc','name','default_money','user_money','user_group','status','enable','user_id','pacc','tax','user_id'],
+	        
+	        //自訂欄位內容,若要直接帶欄位數值則用null即可 / 這邊都是使用 function( 第一個代表data帶的欄位 , type , 整筆紀錄的object) 
+	        //參考網址: https://datatables.net/reference/option/columns.render
+	        "render" : [null ,search_acc ,null ,default_money ,null ,null ,null ,null ,null ,null ,null ,null ],
+
+	        //是否可排序
+	        "sort" : [true,true,false,false,false,false,false,false,false,false,false,false ]
+	    };
+
+	    objTable = dataTableData(url,obj);		//dataTable 初始化
+
+	    //下拉選單操作,點了直接送出表單
+	    $("#opt_view").change(function(){
+	        $("#formObj").submit();
+	    });
+	    //核選方塊操作,點了直接送出表單
+	    $(".search_opt").click(function() {
+	        $("#formObj").submit();
+	    });
+	    //按鈕操作,點了之後先設定欄位值,再送出表單
+	    $(".search_type").click(function() {
+	        $("#search_type").val($(this).val());
+	        $("#formObj").submit();
+	    });
+
+	    //表單作業
+	    $("#formObj").submit(function(e){
+	        objTable.DataTable().draw();		//讓dataTable重新載入
+	        e.preventDefault();		//讓表單不要真的送出
+	    });
+	});
+
+	//這一段是 dataTable 初始化,帶入資料來源的網址 及 欄位設定[這邊用object]
+	function dataTableData(url,cols)
+	{
+		//這邊是直接設定 id 為 example 的套dataTable
+	    return $('#example').dataTable({
+	        "ajax" : {
+	            "url": url,
+	            "type": "POST",
+	            "data": function(d){
+	            	//取得表單資料
+	                var frm_data = $('#formObj').serializeArray();
+
+	                var opt_arr = [];
+	                $.each(frm_data, function(key, val) {
+	                    if(val.name!="search_opt") d[val.name] = val.value;
+	                    else opt_arr.push(val.value);
+	                });
+
+	                if(opt_arr.length>0) d["search_opt"] = opt_arr.join();
+
+	                //這邊是配合後端接值改的
+	                d["iDisplayStart"] = d["start"];		//欄位起始行數
+	                d["iDisplayLength"] = d["length"];		//一頁顯示幾筆
+	            }
+	        },
+	        "columnDefs": GetColumns(cols),		//欄位內容設定
+
+	        "processing": true,		//好像是載入中會不會有轉圈圈的
+	        "serverSide": true,		//資料是不是都在server端
+	        "ordering": true,		//是否可排序
+	        "searching": false,		//是否可搜尋[這邊是dataTable會自己產生搜尋用的欄位,不過這範例是要我們自己建搜尋表單]
+	        "lengthChange": false, 	//是否可切換單頁顯示上限
+	        "pagingType": "full_numbers",		//頁碼樣式,參考網址: https://datatables.net/reference/option/pagingType
+
+	        //語系設定
+	        "language" :{
+	            "infoEmpty": "没有資料",
+	            "info": "從 _START_ 到 _END_ /共 _TOTAL_ 筆",
+	            "infoFiltered": "(從 _MAX_ 條資料中搜尋)",
+	            "zeroRecords": "没有搜尋到資料",
+	            "paginate": { "first": "第一頁", "last": "最後一頁", "next": "", "previous": "" }
+	        }
+
+	    });
+	}
+
+	function GetColumns(obj) 
+	{
+		//產生一個ColumnDefs的陣列
+	    var ColumnDefs = [];
+
+	    //預設全部欄位是可以顯示,不可搜尋
+	    ColumnDefs.push({'targets':'_all' ,'visible':true ,'searchable':false });
+
+	    //用for迴圈將欄位設定帶入陣列
+	    for (var i = 0; i < obj.title.length; i++){
+	        ColumnDefs.push({
+	        	"targets":[i] ,				//第幾個欄位
+	        	"title": obj.title[i], 		//欄位顯示名稱
+	        	"data": obj.data[i] ,		//要帶DB的哪個值
+	        	"render": obj.render[i] ,	//自訂樣式
+	        	"orderable":obj.sort[i] 	//是否可排序
+	        });
+	    }
+
+	    return ColumnDefs;
+	}
+
+
+	//客戶帳號顯示
+	function search_acc (obj,m,row)
+	{
+		//user_group轉為數字
+	    var group = parseInt(row.user_group);	
+
+	    //直接純文字顯示
+	    if ( group != 2 && group != 32 ) return obj;	
+
+	    //帶有樣式的顯示
+	    return '<font color="blue" onclick="search_for_group_account(\''+obj+'\')">'+obj+'</font>';
+	}
+
+	//預設額度顯示
+	function default_money ( data, m, row )
+	{
+	    var freeze ,max_win;
+	    freeze = ( row.status == 2 ) ? 'true' : 'false';
+	    max_win = (row.is_max_win_check == 1) ? 'true' : 'false';
+
+	    if ( parseInt(row.lock) == 1 )
+	        return Number(data) + ' <button onclick="alert(\'nothing\')">Nothing</button>';
+	    else
+	        return Number(data) + ' <button onclick="alert(\'' + row.user_money + '\')">Alert</button>';
+	}
+	</script>
+</head>
+<body>
+
+	<!-- form 表單 -->
+	<form id="formObj">
+        顯示:
+        <select name="group" id="opt_view">
+            <option value='all'>全部</option>
+            <option value='agent'>代理</option>
+            <option value='user'>會員</option>
+        </select>
+
+        查找：
+        <input type="text" name="search_key" id="search_key" value="MA">
+        
+        <button type="button" class="search_type" value="1">編號</button>
+        <button type="button" class="search_type" value="2" id="find_account">帳號</button>
+        <button type="button" class="search_type" value="3">名稱</button>
+        <input type="hidden" id="search_type" name="search_type">
+        
+        <input type="checkbox" name="search_opt" class="search_opt" value="1" >差額
+        <input type="checkbox" name="search_opt" class="search_opt" value="4" >凍結
+        <input type="checkbox" name="search_opt" class="search_opt" value="8" >停用
+    </form>
+
+	<!-- dataTable -->
+	<table id="example" class="table table-bordered display" cellspacing="0" width="100%"></table>
+
+</body>
+</html>

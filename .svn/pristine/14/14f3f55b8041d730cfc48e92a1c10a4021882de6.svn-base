@@ -1,0 +1,501 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class chart extends CI_Controller {
+
+    function __construct() {
+        parent::__construct();
+        $this->load->model('model_user_config');
+        $this->load->model('model_product');
+        $this->load->model('model_operation');
+        $this->load->model('model_DataTableList');
+        $this->load->model('model_advice_type');
+        $this->load->driver('cache');
+    }
+
+    public function data() {
+        $product_code = $this->input->get_post('product_code', TRUE);
+        $date = $this->input->get_post('date', TRUE);
+    }
+
+    //預設k線圖
+    public function index() {
+        $type = 0;
+        $type = $this->input->get('type');
+        if ($type == null) {
+            $type = 0;
+        }
+
+        $product_code = $this->input->get_post('product_code', TRUE);
+        $this->load->view('chart/new_stock', array("code" => $product_code, "type" => $type));
+        return;
+        $mapData = array();
+        $usr = $_SESSION['end_user'];
+        $product_code = $this->input->get_post('product_code', TRUE);
+
+        $sql = 'select * from product where  code = \'' . $product_code . '\'';
+        $product = $this->mydb->queryRow($sql);
+        //var_dump($product);
+        $mapData['name'] = $product['name'];
+
+
+        $path = '/var/www/dev_future/application/logs/' . $product_code . '.txt';
+        $file = fopen($path, "r");
+        if (!$file) {
+            $mapData['msg'] = 'no file';
+            //$this->View('chart/stock', $mapData); 
+        } else {
+
+            $arrDate = array();
+            $allData = array();
+            $i = 0;
+            while (!feof($file)) {
+                $value = fgets($file);
+                $json = json_decode($value, true);
+
+                $date1 = date('Y-m-d');
+                if (!isset($json['create_date'])) {
+                    continue;
+                }
+
+
+                $priceData = array();
+                $priceData[] = strtotime($json['create_date']); //date('Y-m-d', strtotime($json['create_date']));
+                $priceData[] = $json['open_price'] / 100;   //開盤價
+                $priceData[] = $json['open_price'] / 100;   //開盤價
+                $priceData[] = $json['high_price'] / 100;   //最高
+                $priceData[] = $json['low_price'] / 100;     //最低
+                $priceData[] = $json['now_amount']; //總量
+
+                $allData[] = $priceData;
+
+                $i++;
+            }
+            $mapData['msg'] = 'success';
+            $mapData['data'] = $allData;
+            $mapData['type'] = $type;
+            fclose($file);
+        }
+        $this->load->view('chart/stock', $mapData);
+    }
+
+    private function getNowPrice($product_code) {
+
+        $file_path = __DIR__ . "/../config/cache.php";
+        //echo "include file:$file_path\n";
+        $config = include($file_path);
+        $host = $config['memcached'][0]['host'];
+        $port = $config['memcached'][0]['port'];
+        $memcache2 = new memcached();
+        $memcache2->setOption(Memcached::OPT_SERIALIZER, Memcached::SERIALIZER_PHP);
+        $memcache2->addServer($host, $port);
+
+
+
+//取得所有商品，memcached最後的價位
+
+
+        $cache = $memcache2->get("price_$product_code");
+        $cache = $cache[0];
+        $money = $cache['new_price'];
+        return $money;
+    }
+
+    public function datalist() {
+        /* */
+        $uri = 'mongodb://root:grace623@192.168.10.12:27017/admin';
+        $manager = new MongoDB\Driver\Manager($uri);
+
+        //date_default_timezone_set('Asia/Taipei');
+        $product_code = $this->input->get_post('product_code', TRUE);
+        $date = $this->input->get_post('date', TRUE);
+        $type = $this->input->get_post('type', TRUE);
+        $output = $this->input->get_post('output', TRUE);
+
+
+        //正式機要拿掉 by magus
+//        $memcache2->setOption(Memcached::OPT_SERIALIZER, Memcached::SERIALIZER_PHP);
+        //正式機要拿掉 by magus
+
+        if ($product_code == '') {
+            $product_code = 'CIF';
+        }
+
+        if ($date == '') {
+            //$date=getdate();
+            $date = new DateTime(date('Y-m-d'));
+        } else {
+            $date = new DateTime($date);
+        }
+
+        //$filter = ['_id' => $_id1];
+
+        ini_set("display_errors", 1);
+//        var_dump($date);
+        // var_dump($type);
+        if ($type == '') {
+
+            $type = '1';
+        }
+//die;
+//        $list = array();
+//
+//        $cnt = 1;
+//        $ext = '1';
+//
+        if ($type == '1') {
+//            $cnt = 14;
+            $cnt = 2;
+            $ext = '1';
+            if ($this->input->get_post('chart_type', TRUE) == 'line') {
+                $date = new DateTime($this->input->get_post('dt'));
+                $cnt = intval($this->input->get_post('days'));
+            }
+            date_default_timezone_set('Asia/Taipei');
+            $datetime = date("Y-m-d H:i:s");
+            $filter = ['create_time' => ['$lte' => "$datetime"]];
+            $options = [
+                'pretty',
+                'sort' => ['create_time' => -1],
+                'limit' => 200,
+            ];
+            $query = new MongoDB\Driver\Query($filter, $options);
+            $rows = $manager->executeQuery('amount_price.amount_price_' . $product_code . '1', $query);
+            //    foreach ($rows as $r) {
+            //print_r($r);
+            //     }
+            //  die;
+            // print_r($rows);            
+        }
+//        die;
+        if ($type == '3') {
+            date_default_timezone_set('Asia/Taipei');
+            $datetime = date("Y-m-d H:i:s");
+            $filter = ['create_time' => ['$lte' => "$datetime"]];
+            $options = [
+                'pretty',
+                'sort' => ['create_time' => -1],
+                'limit' => 200,
+            ];
+            $query = new MongoDB\Driver\Query($filter, $options);
+            $rows = $manager->executeQuery('amount_price.amount_price_' . $product_code . '3', $query);
+        }
+        if ($type == '5') {
+            date_default_timezone_set('Asia/Taipei');
+            $datetime = date("Y-m-d H:i:s");
+            $filter = ['create_time' => ['$lte' => "$datetime"]];
+            $options = [
+                'pretty',
+                'sort' => ['create_time' => -1],
+                'limit' => 200,
+            ];
+            $query = new MongoDB\Driver\Query($filter, $options);
+            $rows = $manager->executeQuery('amount_price.amount_price_' . $product_code . '5', $query);
+        }
+        if ($type == '10') {
+            date_default_timezone_set('Asia/Taipei');
+            $datetime = date("Y-m-d H:i:s");
+            $filter = ['create_time' => ['$lte' => "$datetime"]];
+            $options = [
+                'pretty',
+                'sort' => ['create_time' => -1],
+                'limit' => 200,
+            ];
+            $query = new MongoDB\Driver\Query($filter, $options);
+            $rows = $manager->executeQuery('amount_price.amount_price_' . $product_code . '10', $query);
+        }
+        if ($type == '15') {
+            date_default_timezone_set('Asia/Taipei');
+            $datetime = date("Y-m-d H:i:s");
+            $filter = ['create_time' => ['$lte' => "$datetime"]];
+            $options = [
+                'pretty',
+                'sort' => ['create_time' => -1],
+                'limit' => 200,
+            ];
+            $query = new MongoDB\Driver\Query($filter, $options);
+            $rows = $manager->executeQuery('amount_price.amount_price_' . $product_code . '15', $query);
+        }
+        if ($type == '30') {
+            date_default_timezone_set('Asia/Taipei');
+            $datetime = date("Y-m-d H:i:s");
+            $filter = ['create_time' => ['$lte' => "$datetime"]];
+            $options = [
+                'pretty',
+                'sort' => ['create_time' => -1],
+                'limit' => 200,
+            ];
+            $query = new MongoDB\Driver\Query($filter, $options);
+            $rows = $manager->executeQuery('amount_price.amount_price_' . $product_code . '30', $query);
+        }
+        if ($type == '60') {
+            date_default_timezone_set('Asia/Taipei');
+            $datetime = date("Y-m-d H:i:s");
+            $filter = ['create_time' => ['$lte' => "$datetime"]];
+            $options = [
+                'pretty',
+                'sort' => ['create_time' => -1],
+                'limit' => 200,
+            ];
+            $query = new MongoDB\Driver\Query($filter, $options);
+            $rows = $manager->executeQuery('amount_price.amount_price_' . $product_code . '60', $query);
+        }
+        if ($type == 'd') {
+            date_default_timezone_set('Asia/Taipei');
+            $datetime = date("Y-m-d");
+            $filter = ['create_time' => ['$lte' => "$datetime"]];
+            $options = [
+                'pretty',
+                'sort' => ['create_time' => -1],
+                'limit' => 200,
+            ];
+            $query = new MongoDB\Driver\Query($filter, $options);
+            $rows = $manager->executeQuery('amount_price.daily_'.$product_code, $query);
+        }
+//        if ($type == 'w') {
+//            $cnt = 365;
+//            $ext = '60';
+//        }
+//        if ($type == 'y') {
+//            $cnt = 365;
+//            $ext = '60';
+//        }
+//        //echo $type.'--'.$ext.'--'.$cnt.'</br>';
+//        $listItem = new stdClass;
+//        $listItem->filename = '/var/www/future/application/logs/products/' . $product_code . '/' . $date->format('Ymd') . '_' . $ext . '.txt';
+//        if ($type == 'd') {
+//            $listItem->filename = '/var/www/future/application/logs/products/' . $product_code . '/' . $date->format('Y') . '_daily.txt';
+//        } else if ($type == 'w') {  //周   
+//            $listItem->filename = '/var/www/future/application/logs/products/' . $product_code . '/' . $date->format('Y') . '_week.txt';
+//        } else if ($type == 'y') {  //月
+//            $listItem->filename = '/var/www/future/application/logs/products/' . $product_code . '/' . $date->format('Y') . '_month.txt';
+//        }
+//        $listItem->date = $date->format('Y-m-d');
+//        $list[] = $listItem;
+//
+//        if (($type == 'd') or ( $type == 'w') or ( $type == 'y')) {
+//            for ($itmp = 1; $itmp < 5; $itmp++) {
+//                $strYear = date_sub($date, date_interval_create_from_date_string(($itmp) . " year"));
+//                $listItem = new stdClass;
+//                if ($type == 'd') {
+//                    $listItem->filename = '/var/www/future/application/logs/products/' . $product_code . '/' . $strYear->format('Y') . '_daily.txt';
+//                } else if ($type == 'w') {  //周   
+//                    $listItem->filename = '/var/www/future/application/logs/products/' . $product_code . '/' . $strYear->format('Y') . '_week.txt';
+//                } else if ($type == 'y') {  //月
+//                    $listItem->filename = '/var/www/future/application/logs/products/' . $product_code . '/' . $strYear->format('Y') . '_month.txt';
+//                }
+//                $list[] = $listItem;
+//            }
+//        }
+//        if (($type != 'd') and ( $type != 'w') and ( $type != 'y')) {
+//            for ($i = 1; $i <= $cnt; $i++) {
+//                $datev = date_sub($date, date_interval_create_from_date_string("1 days"));
+//                //$list[]='/var/www/future/application/logs/products/'.$product_code.'/'.$datev->format('Ymd').'_'.$ext.'.txt';
+//                $listItem = new stdClass;
+//                $listItem->filename = '/var/www/future/application/logs/products/' . $product_code . '/' . $datev->format('Ymd') . '_' . $ext . '.txt';
+//                $list[] = $listItem;
+//            }
+//        }
+//        var_dump($list);
+//        die;
+        // echo '<pre>';
+        // print_r($list);
+        // echo('</pre>');
+        //$new_price = $this->model_DataTableList->getnewprice($product_code);
+        //var_dump($new_price[0]['']);
+        $money = $this->getNowPrice($product_code);
+        // var_dump($money);
+        // die;
+
+        $allData = array();
+
+        if ($output == 'table') {
+            echo '<pre>';
+            print_r($list);
+            echo('</pre>');
+            $icount = 0;
+            for ($i = 0; $i < count($list); $i++) {
+                if (($type == '1' or $type == '3') and ( $icount >= 600)) {
+                    break;
+                }
+                if (!empty($rows)) {
+
+                    foreach ($rows as $key => $value) {
+                        $priceData = new stdClass;
+                        $priceData->create_date = $value->create_time;
+                        $priceData->create_time = $value->create_time; // strtotime($json['create_time']); //date('Y-m-d', strtotime($json['create_date']));
+                        $priceData->new_price = $value->new_price;   //開盤價
+                        $priceData->high_price = $value->high_price;   //最高
+                        $priceData->low_price = $value->low_price;     //最低
+                        $priceData->close_price = $value->close_price;   //開盤價
+                        $priceData->total_amount = $value->total_amount; //總量
+                        //新的價位20180111
+                        $priceData->newext_price = $money; //新的價位20180111
+                        $allData[] = $priceData;
+                    }
+                }
+//                if (file_exists($list[$i]->filename)) {
+//                    $file = fopen($list[$i]->filename, "r");
+//
+//                    $icnt = 0;
+//                    while (!feof($file)) {
+//
+//                        if (($type == '1' or $type == '3') and ( $icount >= 600)) {
+//                            break;
+//                        }
+//
+////                        $value = fgets($file);
+////                        $json = json_decode($value, true);
+////                        if ((!isset($json['create_time'])) || (!isset($json['new_price'])) || (!isset($json['high_price'])) || (!isset($json['low_price'])) || (!isset($json['close_price'])) || (!isset($json['total_amount']))
+////                        ) {
+////                            continue;
+////                        }
+//
+//                        $priceData = new stdClass;
+//                        $priceData->create_date = $json['create_time'];
+//                        $priceData->create_time = $json['create_time'];
+//                        $priceData->new_price = $json['new_price'] / 100;   //開盤價
+//                        $priceData->high_price = $json['high_price'] / 100;   //最高
+//                        $priceData->low_price = $json['low_price'] / 100;     //最低
+//                        $priceData->close_price = $json['close_price'] / 100;   //開盤價
+//                        $priceData->total_amount = $json['total_amount']; //總量
+//                        //新的價位20180111
+//                        $priceData->newext_price = $money; //新的價位20180111
+//                        $priceData->idx = $icount;
+//                        $allData[] = $priceData;
+//
+//                        if ($icnt > 800) {
+//                            break;
+//                        }
+//
+//                        $icnt++;
+//                        $icount++;
+//                    }
+//                    fclose($file);
+//                }
+            }
+            if (count($allData) > 0) {
+                echo '<style>';
+                echo 'table, th, td {';
+                echo 'border: 1px solid black;';
+                echo 'border-collapse: collapse;';
+                echo '}';
+                echo 'th, td {';
+                echo 'padding: 5px;';
+                echo 'text-align: right;';
+                echo '}';
+                echo '</style>';
+
+                echo '<table border=1 padding=0 ><thead>';
+                echo '<th>idx</th>';
+                echo '<th>create_date</th>';
+                echo '<th>create_time</th>';
+                echo '<th>new_price</th>';
+                echo '<th>high_price</th>';
+                echo '<th>low_price</th>';
+                echo '<th>close_price</th>';
+                echo '<th>total_amount</th>';
+                echo '</thead>';
+                echo '<tbody>';
+
+                foreach ($allData as $key => $value) {
+                    // if (($value->idx >=800) and ($type=='1'))
+                    // {
+                    //   break;
+                    // }
+                    echo '<tr>';
+                    echo '<td>' . $value->idx . '</td>';
+                    echo '<td>' . $value->create_date . '</td>';
+                    echo '<td>' . $value->create_time . '</td>';
+                    echo '<td>' . $value->new_price . '</td>';
+                    echo '<td>' . $value->high_price . '</td>';
+                    echo '<td>' . $value->low_price . '</td>';
+                    echo '<td>' . $value->close_price . '</td>';
+                    echo '<td>' . $value->total_amount . '</td>';
+                    echo '</tr>';
+                }
+                echo '</tbody>';
+                echo '</table>';
+                echo '<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>';
+            }
+            return;
+        }
+
+        $icount = 0;
+
+        foreach ($rows as $key => $value) {
+            $priceData = new stdClass;
+            $priceData->create_date = $value->create_time;
+            $priceData->create_time = $value->create_time; // strtotime($json['create_time']); //date('Y-m-d', strtotime($json['create_date']));
+            $priceData->new_price = $value->new_price;   //開盤價
+            $priceData->high_price = $value->high_price;   //最高
+            $priceData->low_price = $value->low_price;     //最低
+            $priceData->close_price = $value->close_price;   //開盤價
+            $priceData->total_amount = $value->total_amount; //總量
+            //新的價位20180111
+            $priceData->newext_price = $money; //新的價位20180111
+            $allData[] = $priceData;
+        }
+
+//        for ($i = 0; $i < count($list); $i++) {
+////            if (($type=='1' or $type=='3') and ($icount >= 600)){
+////              break;
+////            }
+////            if (($type == '1' ) and ( $icount >= 4000)) {
+////                break;
+////            }
+////            if (($type == '3') and ( $icount >= 2000)) {
+////                break;
+////            }
+////                        if (($type == '5' ) and ( $icount >= 1000)) {
+////                break;
+////            } 
+//            if (file_exists($list[$i]->filename)) {
+//                $file = fopen($list[$i]->filename, "r");
+//
+//                $icnt = 0;
+//                while (!feof($file)) {
+//
+////            if (($type == '1' ) and ( $icount >= 4000)) {
+////                break;
+////            }
+////             if (($type == '5' ) and ( $icount >= 1000)) {
+////                break;
+////            }
+////            if (($type == '3') and ( $icount >= 2000)) {
+////                break;
+////            }
+//                    $value = fgets($file);
+//                    $json = json_decode($value, true);
+//                    if ((!isset($json['create_time'])) || (!isset($json['new_price'])) || (!isset($json['high_price'])) || (!isset($json['low_price'])) || (!isset($json['close_price'])) || (!isset($json['total_amount']))
+//                    ) {
+//                        continue;
+//                    }
+//
+//                    $priceData = new stdClass;
+//                    $priceData->create_date = $json['create_time'];
+//                    $priceData->create_time = $json['create_time']; // strtotime($json['create_time']); //date('Y-m-d', strtotime($json['create_date']));
+//                    $priceData->new_price = $json['new_price'];   //開盤價
+//                    $priceData->high_price = $json['high_price'];   //最高
+//                    $priceData->low_price = $json['low_price'];     //最低
+//                    $priceData->close_price = $json['close_price'];   //開盤價
+//                    $priceData->total_amount = $json['total_amount']; //總量
+//                    //新的價位20180111
+//                    $priceData->newext_price = $money; //新的價位20180111
+//                    $allData[] = $priceData;
+//
+//                    $icount++;
+////                    if ($icnt > 800) {
+////                        break;
+////                    }
+//                    $icnt++;
+//                }
+//                fclose($file);
+//            }
+//        }
+        //var_dump($allData);
+        echo json_encode($allData, JSON_UNESCAPED_SLASHES);
+    }
+
+}

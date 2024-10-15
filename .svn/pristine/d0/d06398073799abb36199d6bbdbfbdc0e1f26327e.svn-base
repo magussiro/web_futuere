@@ -1,0 +1,36 @@
+<?php
+class model_product extends MY_Model {
+    
+    public function __construct(){
+       
+       //資料庫實際資料表名稱 
+        parent::__construct('product');
+
+    }
+
+
+
+    public function getShowProduct($user_id)
+    {
+        $sql = 'select a.* ,b.is_show from product a
+                left join user_product b on(a.code=b.product_code)
+                where b.user_id= ? order by sort';
+        $result =  $this->mydb->queryArray($sql ,$user_id);
+        return $result;
+    }
+
+    public function hideAllProduct($user_id)
+    {
+        $sql = ' select id from user_product where user_id = ? ';
+        $result =  $this->mydb->queryArray($sql ,$user_id);
+
+        foreach($result as $item)
+        {
+            $data = array();
+            $data['is_show'] = 0;
+            $this->model_user_product->update($item['id'],$data);
+        }
+
+    }
+
+}

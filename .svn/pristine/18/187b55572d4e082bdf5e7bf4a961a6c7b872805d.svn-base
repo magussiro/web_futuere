@@ -1,0 +1,638 @@
+/* all START */
+
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url(../font/RobotoMono-Medium.ttf);
+}
+
+@font-face {
+    font-family: 'Noto Sans TC';
+    src: url(../font/NotoSansTC-Light.otf);
+}
+
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    /*background-image: url("../img/wrap_bg2.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;*/
+    background: #efefef;
+}
+
+body * {
+    font-family: 'Roboto Mono', 'Noto Sans TC', sans-serif;
+    font-size: 15px;
+    font-weight: normal;
+    color: #4a5e6e;
+}
+
+
+/* all END */
+
+.popupWrap {
+    text-align: center;
+    min-width: 970px;
+}
+
+.popupH2 {
+    font-size: 1.5em;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    letter-spacing: 5px;
+}
+
+.popupH3 {
+    font-size: 1.1em;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    letter-spacing: 3px;
+}
+
+.btnStyle1 {
+    font-size: 15px;
+    color: #fff;
+    background: #4a5e6e;
+    border: 2px solid #4a5e6e;
+    border-radius: 5px;
+    padding: 1px 2px;
+    cursor: pointer;
+    height: 27px;
+}
+
+.btnStyle1:hover {
+    text-decoration: none;
+    color: #fff;
+    border: 2px solid #e8566d;
+}
+
+.btnStyle2 {
+    font-size: 15px;
+    color: #fff;
+    background: #4a5e6e;
+    border: 2px solid #4a5e6e;
+    border-radius: 5px;
+    padding: 0px 15px;
+    cursor: pointer;
+    height: 29px;
+    margin: 5px auto;
+}
+
+.btnStyle2:hover {
+    text-decoration: none;
+    color: #fff;
+    border: 2px solid #e8566d;
+}
+
+.inputStyle1 {
+    background: transparent;
+    color: #4a5e6e;
+    border: 2px solid #4a5e6e;
+    border-radius: 5px;
+    padding-left: 5px;
+    width: 150px;
+}
+
+.inputStyle1:focus {
+    outline: none;
+}
+
+.inputStyle2 {
+    background: transparent;
+    color: #4a5e6e;
+    border: 2px solid #4a5e6e;
+    border-radius: 5px;
+    padding-left: 5px;
+    width: 60px;
+}
+
+.inputStyle2:focus {
+    outline: none;
+}
+
+.inputStyle3 {
+    background: transparent;
+    color: #4a5e6e;
+    border: 2px solid #4a5e6e;
+    border-radius: 5px;
+    padding: 0px 5px;
+    margin: 5px auto;
+    height: 29px;
+    line-height: 29px;
+}
+
+.inputStyle3:focus {
+    outline: none;
+}
+
+.selectStyle1 {
+    background: transparent;
+    color: #4a5e6e;
+    border: 2px solid #4a5e6e;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.selectStyle1 option {
+    color: black;
+}
+
+.aStyle1:hover {
+    color: #66d9ff;
+    text-decoration: none;
+}
+
+.popupInline {
+    min-height: 27px;
+    margin-bottom: 10px;
+}
+
+.popupInline .popupInlineItem {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.order_many {
+    padding: 10px;
+    border: 5px solid #eb6b61;
+    color: #eb6b61;
+    border-radius: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+.order_empty {
+    padding: 10px;
+    border: 5px solid #4BDC50;
+    color: #4BDC50;
+    border-radius: 5px;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+.order_many:hover,
+.order_empty:hover {
+    color: #fff;
+}
+
+.marginBottom20 {
+    margin-bottom: 20px;
+}
+
+.lineHeight1_5 {
+    line-height: 1.5em;
+}
+
+.noColor {
+    color: transparent;
+}
+
+.redColor {
+    color: #eb6b61 !important;
+}
+
+.greenColor {
+    color: #55DF56 !important;
+}
+
+.many_bar {
+    width: 35px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: top;
+    background: #E76C6F;
+    color: transparent;
+}
+
+.empty_bar {
+    width: 35px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: top;
+    background: #55DF56;
+    color: transparent;
+}
+
+.accordionStyle1 h3 {
+    text-align: left;
+}
+
+.accordionStyle1 .marginLeft50 {
+    margin-left: 50px;
+}
+
+.accordionStyle1.ui-accordion .ui-accordion-content {
+    padding: 0px 0px;
+}
+
+.accordionStyle1 .ui-widget-content {
+    background: transparent;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.dataTables_wrapper {
+    border-radius: 5px;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_processing,
+.dataTables_wrapper .dataTables_paginate {
+    color: #4a5e6e;
+}
+
+.dataTables_wrapper .pagination {
+    margin: 0px;
+}
+
+.dataTables_wrapper .pagination > li > a,
+.dataTables_wrapper .pagination > li > span {
+    background: none;
+    color: #4a5e6e;
+    border: 2px solid #4a5e6e;
+    padding: 3px 12px;
+}
+
+.dataTables_wrapper .pagination > li > a:hover,
+.dataTables_wrapper .pagination > li > span:hover,
+.dataTables_wrapper .pagination > li > a:focus,
+.dataTables_wrapper .pagination > li > span:focus {
+    background: #4a5e6e;
+    border: 2px solid #4a5e6e;
+    color: #fff;
+}
+
+.dataTables_wrapper .pagination > .active > a,
+.dataTables_wrapper .pagination > .active > span,
+.dataTables_wrapper .pagination > .active > a:hover,
+.dataTables_wrapper .pagination > .active > span:hover,
+.dataTables_wrapper .pagination > .active > a:focus,
+.dataTables_wrapper .pagination > .active > span:focus {
+    background: #4a5e6e;
+    border: 2px solid #4a5e6e;
+    color: #fff;
+}
+
+.dataTables_wrapper .pagination > .disabled > span,
+.dataTables_wrapper .pagination > .disabled > span:hover,
+.dataTables_wrapper .pagination > .disabled > span:focus,
+.dataTables_wrapper .pagination > .disabled > a,
+.dataTables_wrapper .pagination > .disabled > a:hover,
+.dataTables_wrapper .pagination > .disabled > a:focus {
+    background: none;
+    color: #4a5e6e;
+    border: 2px solid #4a5e6e;
+}
+
+table.tableStyle1 thead {
+    background: #e8566d;
+}
+
+table.tableStyle1 thead th {
+    text-align: center;
+    font-weight: normal;
+    color: #fff;
+}
+
+table.dataTable.tableStyle1 thead th,
+table.dataTable thead td {
+    border-bottom: none;
+}
+
+table.dataTable.tableStyle1 thead th,
+table.dataTable.tableStyle1 tbody td {
+    padding: 4px 0px;
+}
+
+table.dataTable.tableStyle1 tbody tr {
+    background-color: #fff;
+}
+
+table.dataTable.display.tableStyle1 tbody tr:hover {
+    background: rgba(229, 248, 255, 0.2);
+}
+
+table.dataTable.stripe.tableStyle1 tbody tr.odd,
+table.dataTable.display.tableStyle1 tbody tr.odd {
+    background-color: #fff;
+}
+
+table.dataTable.stripe.tableStyle1 tbody tr.odd:hover,
+table.dataTable.display.tableStyle1 tbody tr.odd:hover {
+    background: rgba(229, 248, 255, 0.2);
+}
+
+table.dataTable.order-column.tableStyle1 tbody tr>.sorting_1,
+table.dataTable.order-column.tableStyle1 tbody tr>.sorting_2,
+table.dataTable.order-column.tableStyle1 tbody tr>.sorting_3,
+table.dataTable.display.tableStyle1 tbody tr>.sorting_1,
+table.dataTable.display.tableStyle1 tbody tr>.sorting_2,
+table.dataTable.display.tableStyle1 tbody tr>.sorting_3 {
+    background-color: transparent;
+}
+
+table.dataTable.display.tableStyle1 tbody tr:hover>.sorting_1,
+table.dataTable.display.tableStyle1 tbody tr.odd:hover>.sorting_1,
+table.dataTable.display.tableStyle1 tbody tr.even:hover>.sorting_1,
+table.dataTable.order-column.hover.tableStyle1 tbody tr:hover>.sorting_1,
+table.dataTable.order-column.hover.tableStyle1 tbody tr.odd:hover>.sorting_1,
+table.dataTable.order-column.hover.tableStyle1 tbody tr.even:hover>.sorting_1 {
+    background: none;
+}
+
+table.dataTable.row-border.tableStyle1 tbody th,
+table.dataTable.row-border.tableStyle1 tbody td,
+table.dataTable.display.tableStyle1 tbody th,
+table.dataTable.display.tableStyle1 tbody td {
+    border-top: 1px solid rgba(229, 248, 255, 0.5);
+}
+
+table.dataTable.no-footer.tableStyle1 {
+    border-bottom: 1px solid rgba(229, 248, 255, 0.5);
+}
+
+table.dataTable.tableStyle1 tfoot th,
+table.dataTable tfoot td {
+    border-top: 1px solid rgba(229, 248, 255, 0.5);
+    border-bottom: 1px solid rgba(229, 248, 255, 0.5);
+    padding: 4px 0px;
+    text-align: center;
+    font-weight: normal;
+}
+
+table.tableStyle2 thead {
+    background: #e8566d;
+}
+
+table.tableStyle2 thead th {
+    text-align: center;
+    font-weight: normal;
+    color: #fff;
+}
+
+table.dataTable.tableStyle2 thead th,
+table.dataTable thead td {
+    border-bottom: none;
+}
+
+table.dataTable.tableStyle2 thead th,
+table.dataTable.tableStyle2 tbody td {
+    padding: 4px 0px;
+}
+
+table.dataTable.tableStyle2 tbody tr {
+    background-color: #fff;
+}
+
+table.dataTable.display.tableStyle2 tbody tr:hover {
+    background: rgba(229, 248, 255, 0.2);
+}
+
+table.dataTable.stripe.tableStyle2 tbody tr.odd,
+table.dataTable.display.tableStyle2 tbody tr.odd {
+    background-color: #fff;
+}
+
+table.dataTable.stripe.tableStyle2 tbody tr.odd:hover,
+table.dataTable.display.tableStyle2 tbody tr.odd:hover {
+    background: rgba(229, 248, 255, 0.2);
+}
+
+table.dataTable.order-column.tableStyle2 tbody tr>.sorting_1,
+table.dataTable.order-column.tableStyle2 tbody tr>.sorting_2,
+table.dataTable.order-column.tableStyle2 tbody tr>.sorting_3,
+table.dataTable.display.tableStyle2 tbody tr>.sorting_1,
+table.dataTable.display.tableStyle2 tbody tr>.sorting_2,
+table.dataTable.display.tableStyle2 tbody tr>.sorting_3 {
+    background-color: transparent;
+}
+
+table.dataTable.display.tableStyle2 tbody tr:hover>.sorting_1,
+table.dataTable.display.tableStyle2 tbody tr.odd:hover>.sorting_1,
+table.dataTable.display.tableStyle2 tbody tr.even:hover>.sorting_1,
+table.dataTable.order-column.hover.tableStyle2 tbody tr:hover>.sorting_1,
+table.dataTable.order-column.hover.tableStyle2 tbody tr.odd:hover>.sorting_1,
+table.dataTable.order-column.hover.tableStyle2 tbody tr.even:hover>.sorting_1 {
+    background: none;
+}
+
+table.dataTable.row-border.tableStyle2 tbody th,
+table.dataTable.row-border.tableStyle2 tbody td,
+table.dataTable.display.tableStyle2 tbody th,
+table.dataTable.display.tableStyle2 tbody td {
+    border-top: 1px solid rgba(229, 248, 255, 0.5);
+}
+
+table.dataTable.no-footer.tableStyle2 {
+    border-bottom: 1px solid rgba(229, 248, 255, 0.5);
+}
+
+table.tableStyle3 thead {
+    background: rgb(41, 149, 188);
+}
+
+table.tableStyle3 thead th {
+    text-align: center;
+    font-weight: normal;
+}
+
+table.dataTable.tableStyle3 thead th,
+table.dataTable thead td {
+    border-bottom: none;
+}
+
+table.dataTable.tableStyle3 thead th,
+table.dataTable.tableStyle3 tbody td {
+    padding: 4px 0px;
+}
+
+table.dataTable.tableStyle3 tbody tr {
+    background-color: transparent;
+}
+
+table.dataTable.display.tableStyle3 tbody tr:hover {
+    background: rgba(229, 248, 255, 0.2);
+}
+
+table.dataTable.stripe.tableStyle3 tbody tr.odd,
+table.dataTable.display.tableStyle3 tbody tr.odd {
+    background-color: transparent;
+}
+
+table.dataTable.stripe.tableStyle3 tbody tr.odd:hover,
+table.dataTable.display.tableStyle3 tbody tr.odd:hover {
+    background: rgba(229, 248, 255, 0.2);
+}
+
+table.dataTable.order-column.tableStyle3 tbody tr>.sorting_1,
+table.dataTable.order-column.tableStyle3 tbody tr>.sorting_2,
+table.dataTable.order-column.tableStyle3 tbody tr>.sorting_3,
+table.dataTable.display.tableStyle3 tbody tr>.sorting_1,
+table.dataTable.display.tableStyle3 tbody tr>.sorting_2,
+table.dataTable.display.tableStyle3 tbody tr>.sorting_3 {
+    background-color: transparent;
+}
+
+table.dataTable.display.tableStyle3 tbody tr:hover>.sorting_1,
+table.dataTable.display.tableStyle3 tbody tr.odd:hover>.sorting_1,
+table.dataTable.display.tableStyle3 tbody tr.even:hover>.sorting_1,
+table.dataTable.order-column.hover.tableStyle3 tbody tr:hover>.sorting_1,
+table.dataTable.order-column.hover.tableStyle3 tbody tr.odd:hover>.sorting_1,
+table.dataTable.order-column.hover.tableStyle3 tbody tr.even:hover>.sorting_1 {
+    background: none;
+}
+
+table.dataTable.row-border.tableStyle3 tbody th,
+table.dataTable.row-border.tableStyle3 tbody td,
+table.dataTable.display.tableStyle3 tbody th,
+table.dataTable.display.tableStyle3 tbody td {
+    border-top: 1px solid rgba(229, 248, 255, 0.5);
+}
+
+
+/* password START */
+
+.password_top {
+    margin: auto;
+    width: 60%;
+    border-radius: 5px;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0px 0px 10px #d9d9d9;
+}
+
+.password_top label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.password_bottom {
+    margin: auto;
+    width: 60%;
+    padding: 20px 20px 0px 20px;
+    line-height: 1.5em;
+    text-align: left;
+}
+
+
+/* password END */
+
+
+/* #personal_wrap START */
+
+#personal_content,
+.personal_body {
+    font-size: 0px;
+}
+
+.personal_info {
+    border: 1px solid rgba(229, 248, 255, 0.5);
+    width: 130px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.personal_info li {
+    border-bottom: 1px solid rgba(229, 248, 255, 0.5);
+    padding: 8px;
+    background: #fff;
+}
+
+.personal_info li:last-child {
+    border-bottom: none;
+}
+
+.personal_title {
+    width: 180px;
+    text-align: right;
+}
+
+.personal_title,
+.personal_body {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.personal_body {
+    width: 780px;
+    white-space: nowrap;
+    overflow-x: scroll;
+}
+
+.personal_body li:hover {
+    background: rgba(229, 248, 255, 0.2);
+    cursor: pointer;
+}
+
+.personal_title li {
+    background: #e8566d;
+    color: #fff;
+}
+
+.personal_info .personal_head,
+.personal_info .personal_head:hover {
+    background: #4a5e6e;
+    color: #fff;
+}
+
+.personal_notice {
+    margin-top: 20px;
+}
+
+.personal_notice li {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0px 30px;
+}
+
+
+/* #personal_wrap END */
+
+
+/* #product_wrap START */
+
+#product_top {
+    overflow: auto;
+    padding: 0px 10px;
+    margin-bottom: 5px;
+}
+
+#product_top button {
+    margin-right: 10px;
+}
+
+.product_content li {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#product_bottom {
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+/* #product_wrap END */

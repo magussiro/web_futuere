@@ -1,0 +1,52 @@
+@charset "UTF-8";
+/* Welcome to Compass. In this file you should write your main styles. (or centralize your imports) Import this file using the following HTML or equivalent: <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+@import url(http://fonts.googleapis.com/earlyaccess/notosanstc.css);
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; font: inherit; font-size: 100%; vertical-align: baseline; }
+
+html { line-height: 1; }
+
+ol, ul { list-style: none; }
+
+table { border-collapse: collapse; border-spacing: 0; }
+
+caption, th, td { text-align: left; font-weight: normal; vertical-align: middle; }
+
+q, blockquote { quotes: none; }
+q:before, q:after, blockquote:before, blockquote:after { content: ""; content: none; }
+
+a img { border: none; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary { display: block; }
+
+/*-------- layout ---------*/
+html { position: relative; height: 100%; min-height: 100%; font-size: 62.5%; }
+
+body { font-family: Arial, Helvetica, "Noto Sans TC", "Microsoft JhengHei", 微軟正黑體, sans-serif; background-image: url("../img/bg_login.jpg"); background-repeat: no-repeat; background-position: center; background-size: cover; font-family: sans-serif; color: white; font-size: 1.6rem; margin-bottom: 0px; }
+
+footer { position: absolute; bottom: 0; width: 100%; height: 0px; }
+
+h1 { position: absolute; top: -9999px; left: -9999px; }
+
+h2 { font-size: 3rem; text-align: center; margin-bottom: 30px; }
+
+label { font-size: 1.6rem; margin-bottom: 10px; }
+
+p { font-size: 1.2rem; margin: 10px 0; line-height: 1.6em; }
+
+/*-------- Reset the container --------*/
+.container { margin-right: auto; margin-left: auto; padding-left: 15px; padding-right: 15px; width: 1000px; max-width: none !important; padding-bottom: 50px; }
+.container:before, .container:after { content: " "; display: table; }
+.container:after { clear: both; }
+
+/*-------- style --------*/
+.login-flex { display: -webkit-box; display: -webkit-flex; display: -ms-flexbox; display: flex; justify-content: center; flex-direction: column; height: calc(100vh - 70px); }
+
+.login-wrap { width: 380px; margin: 0 auto; -webkit-justify-content: center; justify-content: center; border: 1px solid #79bafb; background: #224b8c; background: -moz-linear-gradient(left, #224b8c 0%, #72e1f8 50%, #224b8c 100%); background: -webkit-linear-gradient(left, #224b8c 0%, #72e1f8 50%, #224b8c 100%); background: linear-gradient(to right, #224b8c 0%, #72e1f8 50%, #224b8c 100%); -webkit-border-radius: 10px; -moz-border-radius: 10px; -ms-border-radius: 10px; border-radius: 10px; }
+.login-wrap .form-control { border: 1px solid #7ecef4; background-color: #333; color: #fff; }
+.login-wrap button { margin-top: 20px; margin-bottom: 20px; }
+
+.bg-gray { background: #333333; margin: 10px; padding: 20px 30px; }
+
+.download-wrap { margin-top: 20px; text-align: center; }
+
+.tut-management { margin-top: 70px; }

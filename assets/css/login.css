@@ -1,0 +1,64 @@
+#wrap {
+  width: 100%;
+}
+
+#wrap #content {
+  width: 100%;
+}
+
+#wrap #content .panel {
+  width: 500px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 20%;
+  margin: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px 100px;
+}
+
+#wrap #content .panel .panel_heading {
+  font-size: 25px;
+  font-weight: bold;
+  padding: 5px;
+  border: 5px solid #11f;
+  text-align: center;
+  background: #22211f;
+  color: #fff;
+}
+
+#wrap #content .panel .panel_body {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  border: 5px solid #11f;
+  border-top: none;
+  text-align: center;
+}
+
+#wrap #content .panel .panel_body .login_form .form_group {
+  text-align: left;
+  margin: 10px auto;
+}
+
+#wrap #content .panel .panel_body .login_form .form_group label, #wrap #content .panel .panel_body .login_form .form_group input, #wrap #content .panel .panel_body .login_form .form_group select {
+  display: block;
+  width: 95%;
+}
+
+#wrap #content .panel .panel_body .login_form .remember {
+  text-align: left;
+}
+
+#wrap #content .panel .panel_body .login_form .remember input {
+  width: 15px;
+  height: 15px;
+}
+
+#wrap #content .panel .panel_body .login_form input.login {
+  margin: 10px auto;
+  padding: 5px 10px;
+}

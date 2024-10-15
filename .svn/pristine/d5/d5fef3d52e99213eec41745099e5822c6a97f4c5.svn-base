@@ -1,0 +1,52 @@
+<?php
+
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+if ( ! function_exists('getIp'))
+{
+    //取得IP
+	function getIp() 
+    { 
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) 
+        { 
+            $ip=$_SERVER['HTTP_CLIENT_IP']; 
+        } 
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) //to check ip is pass from proxy 
+        { 
+            $ip=$_SERVER['HTTP_X_FORWARDED_FOR']; 
+        } 
+        else { 
+            $ip=$_SERVER['REMOTE_ADDR']; 
+        } 
+        return $ip; 
+    }
+}
+
+if(! function_exists('getGuid'))
+{
+    //取得GUID
+    function getGuid($strPrefix = "")
+	{
+		$charid = strtoupper(md5(uniqid(mt_rand(), true)));
+		$hyphen = chr(45); // "-"
+		$uuid = substr($charid, 0, 8).$hyphen
+			.substr($charid, 8, 4).$hyphen
+			.substr($charid,12, 4).$hyphen
+			.substr($charid,16, 4).$hyphen
+			.substr($charid,20,12);
+		return $strPrefix . $uuid;
+	}
+    
+}
+
+
+if(! function_exists('errorView'))
+{
+    //取得GUID
+    function errorView($msg = "")
+	{
+		echo 'error : '. $msg;
+		exit;
+	}
+    
+}

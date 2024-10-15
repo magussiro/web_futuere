@@ -1,0 +1,168 @@
+/* all */
+
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url(../font/RobotoMono-Medium.ttf);
+}
+
+@font-face {
+    font-family: 'Noto Sans TC';
+    src: url(../font/NotoSansTC-Light.otf);
+}
+
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    /*min-width: 1310px;*/
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-image: url("../img/wrap_bg2.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+body * {
+    font-family: 'Roboto Mono', 'Noto Sans TC', sans-serif;
+    font-size: 15px;
+    color: #fff;
+}
+
+#wrap {
+    width: 100%;
+    height: 100%;
+}
+
+#wrap #content {
+    width: 100%;
+    height: 100%;
+    font-size: 0px;
+    text-align: center;
+}
+
+#wrap #content .panel {
+    min-width: 350px;
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 0px;
+    height: 60%;
+}
+
+#wrap #content .panel:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    width: 0px;
+    height: 100%;
+}
+
+#wrap #content .panel .panel_heading {
+    font-size: 1.3em;
+    padding: 10px;
+    background: #eb6b61;
+    text-align: center;
+    color: #fff;
+    border-radius: 5px 5px 0px 0px;
+}
+
+#wrap #content .panel .panel_body {
+    padding: 20px;
+    border-radius: 0px 0px 5px 5px;
+    background: rgba(229, 248, 255, 0.2);
+    /*margin-bottom: 20px;*/
+}
+
+#wrap #content .panel .panel_body .login_form .form_group {
+    text-align: left;
+    margin-bottom: 10px;
+    font-size: 0px;
+}
+
+#wrap #content .panel .panel_body .login_form .form_group label,
+#wrap #content .panel .panel_body .login_form .form_group input,
+#wrap #content .panel .panel_body .login_form .form_group select {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#wrap #content .panel .panel_body .login_form .form_group label {
+    width: 20%;
+}
+
+#wrap #content .panel .panel_body .login_form .form_group input,
+#wrap #content .panel .panel_body .login_form .form_group select {
+    width: 80%;
+    background: transparent;
+    border: 2px solid rgb(41, 149, 188);
+    border-radius: 5px;
+    padding-left: 5px;
+    height: 28px;
+}
+
+#wrap #content .panel .panel_body .login_form .form_group select option {
+    color: black;
+}
+
+#wrap #content .panel .panel_body .login_form .remember {
+    text-align: left;
+}
+
+#wrap #content .panel .panel_body .login_form .remember input {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#wrap #content .panel .panel_body .login_form .remember label {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#wrap #content .panel .panel_body .login_form input.login {
+    margin-top: 10px;
+    background: rgb(41, 149, 188);
+    border: 2px solid rgb(41, 149, 188);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#wrap #content .panel .panel_body .login_form input.login:hover {
+    border: 2px solid #fff;
+}
+
+.logo_img {
+    margin: 20px 0px;
+}
+
+.login_items {
+    font-size: 0px;
+    background: rgba(229, 248, 255, 0.2);
+}
+
+.login_items li {
+    display: inline-block;
+    vertical-align: middle;
+    width: 25%;
+}
+
+.login_items li:hover {
+    background: rgb(41, 149, 188);
+}
+
+.login_items li a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding: 30px 0px;
+}
